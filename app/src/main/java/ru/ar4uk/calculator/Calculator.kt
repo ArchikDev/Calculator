@@ -1,6 +1,7 @@
 package ru.ar4uk.calculator
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,10 +24,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+val viewModel = CalculatorViewModel()
+
 @Composable
 fun Calculator(
     modifier: Modifier = Modifier
 ) {
+    val state = viewModel.state.value
+
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -47,13 +53,13 @@ fun Calculator(
             horizontalAlignment = Alignment.End
         ) {
             Text(
-                text = "45x8",
+                text = state.expression,
                 fontSize = 36.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
-                text = "360",
+                text = state.result,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -103,6 +109,9 @@ fun Calculator(
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
+                    .clickable {
+                        viewModel.processUserInput("AC")
+                    }
                     .weight(1f)
                     .background(MaterialTheme.colorScheme.secondary)
                     .aspectRatio(1f),
@@ -287,6 +296,9 @@ fun Calculator(
                 modifier = Modifier
                     .clip(CircleShape)
                     .weight(1f)
+                    .clickable {
+                        viewModel.processUserInput("1")
+                    }
                     .background(MaterialTheme.colorScheme.primary)
                     .aspectRatio(1f),
                 contentAlignment = Alignment.Center
@@ -301,6 +313,9 @@ fun Calculator(
                 modifier = Modifier
                     .clip(CircleShape)
                     .weight(1f)
+                    .clickable {
+                        viewModel.processUserInput("2")
+                    }
                     .background(MaterialTheme.colorScheme.primary)
                     .aspectRatio(1f),
                 contentAlignment = Alignment.Center
